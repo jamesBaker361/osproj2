@@ -4,13 +4,13 @@ package project2;
 import "google/protobuf/timestamp.proto";
 
 message DispatcherRequest {
-    int32 jobId = 1
+    int32 jobId = 1;
 }
 
 message DispatcherResponse {
-    int32 jobId = 1
-    int32 nChunks = 2
-    int32 startingIndex = 3
+    int32 jobId = 1;
+    int32 nChunks = 2;
+    int32 startingIndex = 3;
 }
 
 service DispatcherService {
@@ -18,13 +18,13 @@ service DispatcherService {
 }
 
 message FilesystemRequest {
-    int32 startingIndex = 1
-    string fileName=2
-    int32 nBytes =3
+    int32 startingIndex = 1;
+    string fileName=2;
+    int32 nBytes =3;
 }
 
 message FilesystemResponse {
-    bytes data = 1
+    bytes data = 1;
 }
 
 service FilesystemService {
@@ -32,10 +32,10 @@ service FilesystemService {
 }
 
 message ConsolidatorRequest {
-    int32 startingIndex = 1
-    string fileName=2
-    int32 nBytes =3
-    int32 nPrimes = 4
+    int32 startingIndex = 1;
+    string fileName=2;
+    int32 nBytes =3;
+    int32 nPrimes = 4;
 }
 
 message ConsolidatorResponse {
