@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	pb "all_messages.proto"
+	pb "opsys/project2/all_messages"
 )
 
 type routeGuideServer struct {
