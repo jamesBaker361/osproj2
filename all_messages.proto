@@ -1,0 +1,47 @@
+syntax = "proto3";
+package project2;
+
+import "google/protobuf/timestamp.proto";
+
+message DispatcherRequest {
+    int32 jobId = 1
+}
+
+message DispatcherResponse {
+    int32 jobId = 1
+    int32 nChunks = 2
+    int32 startingIndex = 3
+}
+
+service DispatcherService {
+    rpc AcceptRequest (DispatcherRequest) returns DispatcherResponse
+}
+
+message FilesystemRequest {
+    int32 startingIndex = 1
+    string fileName=2
+    int32 nBytes =3
+}
+
+message FilesystemResponse {
+    bytes data = 1
+}
+
+service FilesystemService {
+    rpc AcceptRequest (FilesystemRequest) returns FilesystemResponse
+}
+
+message ConsolidatorRequest {
+    int32 startingIndex = 1
+    string fileName=2
+    int32 nBytes =3
+    int32 nPrimes = 4
+}
+
+message ConsolidatorResponse {
+
+}
+
+service ConsolidatorService {
+    rpc AcceptRequest (ConsolidatorRequest) returns ConsolidatorResponse
+}
