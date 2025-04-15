@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = project2;
+option go_package = "project2";
 
 import "google/protobuf/timestamp.proto";
 
