@@ -14,7 +14,7 @@ message DispatcherResponse {
 }
 
 service DispatcherService {
-    rpc AcceptRequest (DispatcherRequest) returns DispatcherResponse
+    rpc AcceptRequest (DispatcherRequest) returns (DispatcherResponse) {}
 }
 
 message FilesystemRequest {
@@ -28,7 +28,7 @@ message FilesystemResponse {
 }
 
 service FilesystemService {
-    rpc AcceptRequest (FilesystemRequest) returns FilesystemResponse
+    rpc AcceptRequest (FilesystemRequest) returns (FilesystemResponse) {}
 }
 
 message ConsolidatorRequest {
@@ -43,5 +43,5 @@ message ConsolidatorResponse {
 }
 
 service ConsolidatorService {
-    rpc AcceptRequest (ConsolidatorRequest) returns ConsolidatorResponse
+    rpc AcceptRequest (ConsolidatorRequest) returns (ConsolidatorResponse) {}
 }
