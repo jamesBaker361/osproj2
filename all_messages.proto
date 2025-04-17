@@ -1,7 +1,5 @@
 syntax = "proto3";
-option go_package = "opsys/project2";
-
-import "google/protobuf/timestamp.proto";
+option go_package ="home/ubuntu/os";
 
 message DispatcherRequest {
     int32 jobId = 1;
