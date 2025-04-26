@@ -3,8 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-
-	pb "opsys/project2/all_messages"
+	pb"grpc/proto"
 )
 
 type routeGuideServer struct {
