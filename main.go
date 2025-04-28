@@ -6,7 +6,9 @@ import (
 	pb"project/grpc/proto"
 )
 
-
+func (s *pb.DispatcherService)  AcceptRequest(disreq *pb.DispatcherRequest)  *pb.DispatcherResponse {
+		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1}
+	}
 
 func main() {
 	// command-line flags
@@ -30,9 +32,7 @@ func main() {
 	
 	//Dispatcher
 
-	func (s *pb.DispatcherService)  AcceptRequest(disreq *pb.DispatcherRequest)  *pb.DispatcherResponse {
-		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1}
-	}
+	
 	//FileServer
 
 }
