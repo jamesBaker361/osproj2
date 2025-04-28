@@ -96,6 +96,7 @@ func main() {
 	//var c_port int = ports[1]
 	//var f_port int = ports[2]
 	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	serverAddr := fmt.Sprintf("localhost:%d", d_port)
 
