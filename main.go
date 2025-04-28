@@ -188,7 +188,12 @@ func main() {
 
 	//Dispatcher
 	dispatcher_server:=newDispatcherServer(total_jobs+1)
-	
+	//responseQueue=dispatcher_server.responseQueue
+	for i:=0; i< total_jobs;i+=1 {
+		response:=pb.DispatcherResponse{JobId:int(i),StartingIndex:i*_N,EndingIndex:(i+1)*_N}
+		dispatcher_server.responseQueue<-response
+	}
+
 	go startDispatcherServer(d_port,opts,dispatcher_server)
 
 	//Consolidator

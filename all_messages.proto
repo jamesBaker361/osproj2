@@ -7,8 +7,8 @@ message DispatcherRequest {
 
 message DispatcherResponse {
     int32 JobId = 1;
-    int32 NChunks = 2;
-    int32 StartingIndex = 3;
+    int32 StartingIndex = 2;
+    int32 EndingIndex =3
 }
 
 
