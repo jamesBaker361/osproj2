@@ -6,9 +6,9 @@ message DispatcherRequest {
 }
 
 message DispatcherResponse {
-    int32 jobId = 1;
-    int32 nChunks = 2;
-    int32 startingIndex = 3;
+    int32 JobId = 1;
+    int32 NChunks = 2;
+    int32 StartingIndex = 3;
 }
 
 service DispatcherService {

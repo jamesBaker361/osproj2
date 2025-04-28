@@ -30,8 +30,8 @@ func main() {
 	
 	//Dispatcher
 
-	func (s *pb.DispatcherService)  AcceptRequest(disreq *pb.DispatcherRequest)  (disres *pb.DispatcherResponse) {
-		return &pb.DispatcherResponse{jobId:1,nChunks:1,startingIndex:1}
+	func (s *pb.DispatcherService)  AcceptRequest(disreq *pb.DispatcherRequest)  (*pb.DispatcherResponse) {
+		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1}
 	}
 	//FileServer
 
