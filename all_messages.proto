@@ -17,6 +17,7 @@ service DispatcherService {
 }
 
 message FilesystemRequest {
+    
     int32 startingIndex = 1;
     int32 nBytes =2;
 }
@@ -34,7 +35,7 @@ message FilesystemMetadataResponse {
 }
 
 service FilesystemService {
-    rpc AcceptRequest (FilesystemRequest) returns (FilesystemResponse) {}
+    rpc AcceptRequest (FilesystemRequest, string) returns (FilesystemResponse) {}
     rpc AcceptMetadataRequest (FilesystemMetadataRequest) returns (FilesystemMetadataResponse) {}
 }
 
