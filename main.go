@@ -248,7 +248,7 @@ func main() {
 
 	
 	//FileServer
-	go startFilesystemServer(f_port,opts)
+	go startFilesystemServer(f_port,opts,dataPath)
 
 	
 
