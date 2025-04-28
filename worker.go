@@ -16,7 +16,7 @@ import (
 	//"google.golang.org/grpc/credentials"
 	//"google.golang.org/grpc/examples/data"
 	//"google.golang.org/protobuf/proto"
-	pb"project/grpc/proto"
+	pb"./project/grpc/proto"
 )
 
 func sendDispatcherRequest(client pb.DispatcherServiceClient) {
