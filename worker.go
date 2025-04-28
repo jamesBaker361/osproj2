@@ -46,7 +46,7 @@ func getPrimes(numbers []uint64) int {
 	return result
 }
 
-func sendDispatcherRequest(client pb.DispatcherServiceClient) {
+func sendDispatcherRequest(client pb.DispatcherServiceClient) (*pb.DispatcherResponse, error){
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -54,9 +54,9 @@ func sendDispatcherRequest(client pb.DispatcherServiceClient) {
 	response, err := client.AcceptRequest(ctx, request)
 	if err != nil {
 		log.Fatalf("sendDispatcherRequest failed: %v", err)
+		return &pb.DispatcherResponse{},err
 	} else {
-		fmt.Printf("Received response: JobId=%d, NChunks=%d, StartingIndex=%d\n",
-			response.JobId, response.NChunks, response.StartingIndex)
+		return response,err
 	}
 }
 
@@ -135,5 +135,9 @@ func main() {
 	}
 	defer conn.Close()
 	client:=pb.NewDispatcherServiceClient(conn)
-	sendDispatcherRequest(client)
+	response,err:=sendDispatcherRequest(client)
+	if err!=nil{
+	fmt.Printf("Received response: JobId=%d,  StartingIndex=%d, EndingIndex=%d\n",
+			response.JobId, response.StartingIndex,response.EndingIndex)
+			}
 }
