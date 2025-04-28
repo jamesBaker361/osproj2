@@ -56,6 +56,11 @@ func (s *FilesystemServer ) AcceptRequest(_ context.Context, fsreq *pb.Filesyste
 
 }
 
+func newFilesystemServer() *FilesystemServer {
+	s:=&FilesystemServer{}
+	return s
+}
+
 func startDispatcherServer(d_port int,opts []grpc.ServerOption){
 	d_lis, d_err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
 	if d_err != nil {
@@ -77,6 +82,18 @@ func startConsolidatorServer(c_port int,opts []grpc.ServerOption) {
 	log.Printf("gRPC server listening on port %d...", c_port)
 	grpcServer := grpc.NewServer(opts...)
 	pb.RegisterConsolidatorServiceServer(grpcServer, newConsolidatorServer())
+	grpcServer.Serve(lis)
+}
+
+func startFilesystemServer(f_port,opts []grpc.ServerOption) {
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", f_port))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	
+	log.Printf("gRPC server listening on port %d...", f_port)
+	grpcServer := grpc.NewServer(opts...)
+	pb.RegisterFilesystemServiceServer(grpcServer, newFilesystemServer())
 	grpcServer.Serve(lis)
 }
 
@@ -147,23 +164,18 @@ func main() {
 
 	var d_port int = ports[0]
 	var c_port int = ports[1]
-	//var f_port int = ports[2]
+	var f_port int = ports[2]
 	var opts []grpc.ServerOption
 
 	//Dispatcher
-	//var d_port int = 5001
 	go startDispatcherServer(d_port,opts)
 
 	//Consolidator
-	//var c_port int = 5002
 	go startConsolidatorServer(c_port,opts)
-	
-
-
-	
-	
 
 	
 	//FileServer
+	go startFilesystemServer(f_port,opts)
+
 	select {}
 }
