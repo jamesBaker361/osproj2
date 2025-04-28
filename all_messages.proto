@@ -18,8 +18,7 @@ service DispatcherService {
 
 message FilesystemRequest {
     int32 startingIndex = 1;
-    string fileName=2;
-    int32 nBytes =3;
+    int32 nBytes =2;
 }
 
 message FilesystemResponse {

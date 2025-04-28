@@ -60,6 +60,21 @@ func sendDispatcherRequest(client pb.DispatcherServiceClient) (*pb.DispatcherRes
 	}
 }
 
+func sendFilesystemRequest(client pb.FilesystemServiceClient,startingIndex int32, nBytes int32 ) (*pb.FilesystemResponse,error){
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	request:=&pb.FilesystemRequest{NBytes:nBytes,StartingIndex:startingIndex }
+	response,err:=client.AcceptRequest(ctx,request)
+	if err != nil {
+		log.Fatalf("sendDispatcherRequest failed: %v", err)
+		return &pb.FilesystemResponse{},err
+	} else {
+		return response,err
+	}
+
+}
+
 func main() {
 	// command-line flags
 	_C := flag.String("C", "1KB", "Chunk size")
@@ -138,13 +153,13 @@ func main() {
 
 	var d_port int = ports[0]
 	//var c_port int = ports[1]
-	//var f_port int = ports[2]
+	var f_port int = ports[2]
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
-	serverAddr := fmt.Sprintf("localhost:%d", d_port)
+	dispatcherServerAddr := fmt.Sprintf("localhost:%d", d_port)
 
-	conn, err := grpc.NewClient(serverAddr, opts...)
+	conn, err := grpc.NewClient(dispatcherServerAddr, opts...)
 
 	if err != nil {
 		log.Fatalf("fail to dial: %v", err)
@@ -153,9 +168,22 @@ func main() {
 	client:=pb.NewDispatcherServiceClient(conn)
 	response,err:=sendDispatcherRequest(client)
 	if err!=nil{
-	log.Fatalf("sendDispatcherRequest failed: %v", err)
-			}else{
-fmt.Printf("Received response: JobId=%d,  StartingIndex=%d, EndingIndex=%d\n",
+		log.Fatalf("sendDispatcherRequest failed: %v", err)
+	}else{
+		fmt.Printf("Received response: JobId=%d,  StartingIndex=%d, EndingIndex=%d\n",
 			response.JobId, response.StartingIndex,response.EndingIndex)
-			}
+		filesystemServerAddr := fmt.Sprintf("localhost:%d", f_port)
+		f_conn, f_err := grpc.NewClient(filesystemServerAddr, opts...)
+		if f_err != nil {
+			log.Fatalf("fail to grpc.NewClient(filesystemServerAddr): %v", f_err)
+		}
+		defer f_conn.close()
+		f_client:=pb.NewFilesystemServiceClient(f_conn)
+		f_response,f_err:=sendFilesystemRequest(f_client,response.StartingIndex,C)
+		if f_err != nil {
+			log.Fatalf("fail to fs reques: %v",f_err)
+		}
+		fmt.Printf("Received fs response: data0=%d,  \n",
+			f_response.Data[0])
+	}
 }
