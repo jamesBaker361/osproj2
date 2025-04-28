@@ -10,6 +10,7 @@ import (
 	"strings"
 	"context"
 	"time"
+	"math"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -18,6 +19,32 @@ import (
 	//"google.golang.org/protobuf/proto"
 	pb"project/grpc/proto"
 )
+
+func isPrime(n uint64) bool {
+	if n <= 1 {
+		return false
+	} else if n == 2 || n == 3 || n%2 == 0 {
+		return true
+	}
+
+	for i := uint64(3); i <= uint64(math.Sqrt(float64(n))); i += 2 {
+		if n%i == 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func getPrimes(numbers []uint64) int {
+	result := 0
+	for _, n := range numbers {
+		if isPrime(n) {
+			result++
+		}
+
+	}
+	return result
+}
 
 func sendDispatcherRequest(client pb.DispatcherServiceClient) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
