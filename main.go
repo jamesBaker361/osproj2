@@ -188,6 +188,7 @@ func main() {
 
 	//Dispatcher
 	dispatcher_server:=newDispatcherServer(total_jobs+1)
+	
 	go startDispatcherServer(d_port,opts,dispatcher_server)
 
 	//Consolidator
