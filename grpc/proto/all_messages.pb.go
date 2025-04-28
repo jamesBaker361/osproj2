@@ -68,8 +68,8 @@ func (x *DispatcherRequest) GetJobId() int32 {
 type DispatcherResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	JobId         int32                  `protobuf:"varint,1,opt,name=JobId,proto3" json:"JobId,omitempty"`
-	NChunks       int32                  `protobuf:"varint,2,opt,name=NChunks,proto3" json:"NChunks,omitempty"`
-	StartingIndex int32                  `protobuf:"varint,3,opt,name=StartingIndex,proto3" json:"StartingIndex,omitempty"`
+	StartingIndex int32                  `protobuf:"varint,2,opt,name=StartingIndex,proto3" json:"StartingIndex,omitempty"`
+	EndingIndex   int32                  `protobuf:"varint,3,opt,name=EndingIndex,proto3" json:"EndingIndex,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -111,16 +111,16 @@ func (x *DispatcherResponse) GetJobId() int32 {
 	return 0
 }
 
-func (x *DispatcherResponse) GetNChunks() int32 {
+func (x *DispatcherResponse) GetStartingIndex() int32 {
 	if x != nil {
-		return x.NChunks
+		return x.StartingIndex
 	}
 	return 0
 }
 
-func (x *DispatcherResponse) GetStartingIndex() int32 {
+func (x *DispatcherResponse) GetEndingIndex() int32 {
 	if x != nil {
-		return x.StartingIndex
+		return x.EndingIndex
 	}
 	return 0
 }
@@ -427,11 +427,11 @@ const file_all_messages_proto_rawDesc = "" +
 	"\n" +
 	"\x12all_messages.proto\")\n" +
 	"\x11DispatcherRequest\x12\x14\n" +
-	"\x05jobId\x18\x01 \x01(\x05R\x05jobId\"j\n" +
+	"\x05jobId\x18\x01 \x01(\x05R\x05jobId\"r\n" +
 	"\x12DispatcherResponse\x12\x14\n" +
-	"\x05JobId\x18\x01 \x01(\x05R\x05JobId\x12\x18\n" +
-	"\aNChunks\x18\x02 \x01(\x05R\aNChunks\x12$\n" +
-	"\rStartingIndex\x18\x03 \x01(\x05R\rStartingIndex\"m\n" +
+	"\x05JobId\x18\x01 \x01(\x05R\x05JobId\x12$\n" +
+	"\rStartingIndex\x18\x02 \x01(\x05R\rStartingIndex\x12 \n" +
+	"\vEndingIndex\x18\x03 \x01(\x05R\vEndingIndex\"m\n" +
 	"\x11FilesystemRequest\x12$\n" +
 	"\rstartingIndex\x18\x01 \x01(\x05R\rstartingIndex\x12\x1a\n" +
 	"\bfileName\x18\x02 \x01(\tR\bfileName\x12\x16\n" +
