@@ -38,7 +38,7 @@ func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.Consol
 	return &pb.ConsolidatorRequest{}
 }
 
-func new ConsolidatorServer() *ConsolidatorServer {
+func newConsolidatorServer() *ConsolidatorServer {
 	s:=&ConsolidatorServer()
 	return s
 }
