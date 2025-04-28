@@ -179,7 +179,7 @@ func main() {
 		}
 		defer f_conn.Close()
 		f_client:=pb.NewFilesystemServiceClient(f_conn)
-		for j:=response.StartingIndex; j<  response.EndingIndex; j+=C{
+		for j:=response.StartingIndex; j<  response.EndingIndex; j+=int32(C){
 			f_response,f_err:=sendFilesystemRequest(f_client,j,int32(C))
 			if f_err != nil {
 				log.Fatalf("fail to fs reques: %v",f_err)
