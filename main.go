@@ -3,6 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
+	"log"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/examples/data"
+	"google.golang.org/protobuf/proto"
 	pb"project/grpc/proto"
 )
 
@@ -21,6 +27,11 @@ type FilesystemServer struct {
 func (s *DispatcherServer )  AcceptRequest(disreq *pb.DispatcherRequest)  *pb.DispatcherResponse {
 		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1}
 	}
+
+func newDispatcherServer() *DispatcherServer {
+	s:=&DispatcherServer{}
+	return s
+}
 
 
 func main() {
@@ -44,6 +55,16 @@ func main() {
 
 	
 	//Dispatcher
+	var port int = 100
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	var opts []grpc.ServerOption
+
+	grpcServer := grpc.NewServer(opts...)
+	pb.RegisterDispatcherServiceServer(grpcServer, newDispatcherServer())
+	grpcServer.Serve(lis)
 
 	
 	//FileServer
