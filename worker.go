@@ -118,6 +118,7 @@ func main() {
 	C, existsC := C_dict[*_C]
 
 	if !existsC {
+	fmt.Println("no C??")
 		C = 1024
 	}
 
