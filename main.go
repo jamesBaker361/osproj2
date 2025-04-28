@@ -1,9 +1,9 @@
-package main
+package project
 
 import (
 	"flag"
 	"fmt"
-	pb"project/grpc/proto"
+	pb"grpc/proto"
 )
 
 type routeGuideServer struct {
