@@ -85,7 +85,7 @@ func startConsolidatorServer(c_port int,opts []grpc.ServerOption) {
 	grpcServer.Serve(lis)
 }
 
-func startFilesystemServer(f_port,opts []grpc.ServerOption) {
+func startFilesystemServer(f_port int,opts []grpc.ServerOption) {
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", f_port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -175,7 +175,7 @@ func main() {
 
 	
 	//FileServer
-	go startFilesystemServer(opts,f_port)
+	go startFilesystemServer(f_port,opts)
 
 	select {}
 }
