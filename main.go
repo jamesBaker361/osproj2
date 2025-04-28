@@ -57,7 +57,7 @@ func main() {
 	
 	//Dispatcher
 	var port int = 100
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
