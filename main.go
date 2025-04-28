@@ -61,6 +61,7 @@ func startDispatcherServer(d_port int,opts []grpc.ServerOption){
 	if d_err != nil {
 		log.Fatalf("failed to listen: %v", d_err)
 	}
+	log.Printf("gRPC server listening on port %d...", d_port)
 
 	d_grpcServer := grpc.NewServer(opts...)
 	pb.RegisterDispatcherServiceServer(d_grpcServer, newDispatcherServer())
@@ -73,7 +74,7 @@ func startConsolidatorServer(c_port int,opts []grpc.ServerOption) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	
-
+	log.Printf("gRPC server listening on port %d...", c_port)
 	grpcServer := grpc.NewServer(opts...)
 	pb.RegisterConsolidatorServiceServer(grpcServer, newConsolidatorServer())
 	grpcServer.Serve(lis)
