@@ -106,4 +106,5 @@ func main() {
 	}
 	defer conn.Close()
 	client:=pb.NewDispatcherServiceClient(conn)
+	sendDispatcherRequest(client)
 }
