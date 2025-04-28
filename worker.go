@@ -75,7 +75,7 @@ func main() {
 	C_dict["8KB"] = 8 * 1024
 
 
-	C, existsC := C_dict[_C]
+	C, existsC := C_dict[*_C]
 
 	if !existsC {
 		C = 1024
