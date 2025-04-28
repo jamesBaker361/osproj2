@@ -25,7 +25,7 @@ type FilesystemServer struct {
 }
 
 func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.DispatcherRequest)  (*pb.DispatcherResponse,error) {
-		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1}
+		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1},nil
 	}
 
 func newDispatcherServer() *DispatcherServer {
