@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	pb"project/grpc/proto"
+	pb"project/grpc/proto/all_messages"
 )
 
 func (s *pb.DispatcherService)  AcceptRequest(disreq *pb.DispatcherRequest)  *pb.DispatcherResponse {
