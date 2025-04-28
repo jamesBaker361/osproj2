@@ -33,7 +33,7 @@ func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.Dispatc
 
 func newDispatcherServer(buffer_size int) *DispatcherServer {
 	s:=&DispatcherServer{
-		jobQueue: make(chan *pb.DispatcherResponse, buffer_size),
+		responseQueue: make(chan *pb.DispatcherResponse, buffer_size),
 	}
 	return s
 }
