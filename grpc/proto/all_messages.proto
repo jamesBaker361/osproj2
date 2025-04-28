@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package ="grpc/proto";
+option go_package ="project/grpc/proto";
 
 message DispatcherRequest {
     int32 jobId = 1;
