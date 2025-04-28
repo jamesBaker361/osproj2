@@ -6,9 +6,11 @@ import (
 	pb"project/grpc/proto"
 )
 
+type DispatcherServer struct {
+pb.UnimplementedDispatcherServiceServer 
+}
 
-
-func (s *pb.UnimplementedDispatcherServiceServer )  AcceptRequest(disreq *pb.DispatcherRequest)  *pb.DispatcherResponse {
+func (s *DispatcherServer )  AcceptRequest(disreq *pb.DispatcherRequest)  *pb.DispatcherResponse {
 		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1}
 	}
 
