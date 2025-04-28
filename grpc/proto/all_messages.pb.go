@@ -128,8 +128,7 @@ func (x *DispatcherResponse) GetEndingIndex() int32 {
 type FilesystemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	StartingIndex int32                  `protobuf:"varint,1,opt,name=startingIndex,proto3" json:"startingIndex,omitempty"`
-	FileName      string                 `protobuf:"bytes,2,opt,name=fileName,proto3" json:"fileName,omitempty"`
-	NBytes        int32                  `protobuf:"varint,3,opt,name=nBytes,proto3" json:"nBytes,omitempty"`
+	NBytes        int32                  `protobuf:"varint,2,opt,name=nBytes,proto3" json:"nBytes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -169,13 +168,6 @@ func (x *FilesystemRequest) GetStartingIndex() int32 {
 		return x.StartingIndex
 	}
 	return 0
-}
-
-func (x *FilesystemRequest) GetFileName() string {
-	if x != nil {
-		return x.FileName
-	}
-	return ""
 }
 
 func (x *FilesystemRequest) GetNBytes() int32 {
@@ -431,11 +423,10 @@ const file_all_messages_proto_rawDesc = "" +
 	"\x12DispatcherResponse\x12\x14\n" +
 	"\x05JobId\x18\x01 \x01(\x05R\x05JobId\x12$\n" +
 	"\rStartingIndex\x18\x02 \x01(\x05R\rStartingIndex\x12 \n" +
-	"\vEndingIndex\x18\x03 \x01(\x05R\vEndingIndex\"m\n" +
+	"\vEndingIndex\x18\x03 \x01(\x05R\vEndingIndex\"Q\n" +
 	"\x11FilesystemRequest\x12$\n" +
-	"\rstartingIndex\x18\x01 \x01(\x05R\rstartingIndex\x12\x1a\n" +
-	"\bfileName\x18\x02 \x01(\tR\bfileName\x12\x16\n" +
-	"\x06nBytes\x18\x03 \x01(\x05R\x06nBytes\"(\n" +
+	"\rstartingIndex\x18\x01 \x01(\x05R\rstartingIndex\x12\x16\n" +
+	"\x06nBytes\x18\x02 \x01(\x05R\x06nBytes\"(\n" +
 	"\x12FilesystemResponse\x12\x12\n" +
 	"\x04data\x18\x01 \x01(\fR\x04data\"7\n" +
 	"\x19FilesystemMetadataRequest\x12\x1a\n" +
