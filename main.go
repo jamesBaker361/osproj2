@@ -47,6 +47,11 @@ type FilesystemServer struct {
 	pb.UnimplementedFilesystemServiceServer
 }
 
+func (s *FilesystemServer ) AcceptRequest(_ context.Context, fsreq *pb.FilesystemRequest) ( *pb.FilesystemResponse,error) {
+	return &pb.FilesystemResponse{Data:[]byte("hello world")},nil 
+
+}
+
 
 func main() {
 	// command-line flags
