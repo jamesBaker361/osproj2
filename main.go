@@ -35,11 +35,11 @@ type ConsolidatorServer struct {
 }
 
 func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.ConsolidatorRequest) (*pb.ConsolidatorResponse,error) {
-	return &pb.ConsolidatorRequest{}
+	return &pb.ConsolidatorRequest{},nil
 }
 
 func newConsolidatorServer() *ConsolidatorServer {
-	s:=&ConsolidatorServer()
+	s:=&ConsolidatorServer{}
 	return s
 }
 
@@ -79,11 +79,10 @@ func main() {
 	
 	//Dispatcher
 	var d_port int = 5001
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+	d_lis, d_err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
+	if d_err != nil {
+		log.Fatalf("failed to listen: %v", d_err)
 	}
-	var opts []grpc.ServerOption
 
 	grpcServer := grpc.NewServer(opts...)
 	pb.RegisterDispatcherServiceServer(grpcServer, newDispatcherServer())
