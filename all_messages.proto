@@ -35,7 +35,7 @@ message FilesystemMetadataResponse {
 }
 
 service FilesystemService {
-    rpc AcceptRequest (FilesystemRequest, string) returns (FilesystemResponse) {}
+    rpc AcceptRequest (FilesystemRequest) returns (FilesystemResponse) {}
     rpc AcceptMetadataRequest (FilesystemMetadataRequest) returns (FilesystemMetadataResponse) {}
 }
 
