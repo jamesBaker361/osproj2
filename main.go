@@ -53,11 +53,12 @@ func newConsolidatorServer() *ConsolidatorServer {
 
 type FilesystemServer struct {
 	pb.UnimplementedFilesystemServiceServer
+	FileName string
 }
 
 func (s *FilesystemServer ) AcceptRequest(_ context.Context, fsreq *pb.FilesystemRequest) ( *pb.FilesystemResponse,error) {
 	//return &pb.FilesystemResponse{Data:[]byte("hello world")},nil 
-	fileName:=fsreq.FileName
+	fileName:=s.FileName
 	file, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
@@ -77,8 +78,8 @@ func (s *FilesystemServer ) AcceptRequest(_ context.Context, fsreq *pb.Filesyste
 	return &pb.FilesystemResponse{Data:buffer},nil
 }
 
-func newFilesystemServer() *FilesystemServer {
-	s:=&FilesystemServer{}
+func newFilesystemServer(FileName string) *FilesystemServer {
+	s:=&FilesystemServer{FileName:FileName}
 	return s
 }
 
@@ -106,7 +107,7 @@ func startConsolidatorServer(c_port int,opts []grpc.ServerOption) {
 	grpcServer.Serve(lis)
 }
 
-func startFilesystemServer(f_port int,opts []grpc.ServerOption) {
+func startFilesystemServer(f_port int,opts []grpc.ServerOption,FileName string) {
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", f_port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -114,7 +115,7 @@ func startFilesystemServer(f_port int,opts []grpc.ServerOption) {
 	
 	log.Printf("gRPC server listening on port %d...", f_port)
 	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterFilesystemServiceServer(grpcServer, newFilesystemServer())
+	pb.RegisterFilesystemServiceServer(grpcServer, newFilesystemServer(FileName))
 	grpcServer.Serve(lis)
 }
 
