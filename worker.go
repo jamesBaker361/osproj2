@@ -137,7 +137,9 @@ func main() {
 	client:=pb.NewDispatcherServiceClient(conn)
 	response,err:=sendDispatcherRequest(client)
 	if err!=nil{
-	fmt.Printf("Received response: JobId=%d,  StartingIndex=%d, EndingIndex=%d\n",
+	log.Fatalf("sendDispatcherRequest failed: %v", err)
+			}else{
+fmt.Printf("Received response: JobId=%d,  StartingIndex=%d, EndingIndex=%d\n",
 			response.JobId, response.StartingIndex,response.EndingIndex)
 			}
 }
