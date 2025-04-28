@@ -128,7 +128,8 @@ func main() {
 
 	// Print the file size
 	fmt.Printf("File size of %s is %d bytes\n", *dataPath, fileSize)
-	total_jobs :=fileSize / N
+	_N:=*N
+	total_jobs :=fileSize / _N
 	fmt.Printf("Total jobs: %d\n",total_jobs)
 
 	file, err := os.Open(*configPath)
@@ -187,7 +188,7 @@ func main() {
 
 	//Dispatcher
 	dispatcher_server:=newDispatcherServer(total_jobs+1)
-	go startDispatcherServer(d_port,opts)
+	go startDispatcherServer(d_port,opts,dispatcher_server)
 
 	//Consolidator
 	go startConsolidatorServer(c_port,opts)
