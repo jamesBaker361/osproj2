@@ -24,7 +24,15 @@ func main() {
 	fmt.Println("Config file path:", *configPath)
 
 	//Consolidator
+
+
+
+	
 	//Dispatcher
+
+	func (s *pb.DispatcherService)  AcceptRequest(disreq *pb.DispatcherRequest)  (disres *pb.DispatcherResponse) {
+		return &pb.DispatcherResponse{jobId:1,nChunks:1,startingIndex:1}
+	}
 	//FileServer
 
 }
