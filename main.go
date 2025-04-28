@@ -151,11 +151,11 @@ func main() {
 
 	//Dispatcher
 	//var d_port int = 5001
-	startDispatcherServer(d_port,opts)
+	go startDispatcherServer(d_port,opts)
 
 	//Consolidator
 	//var c_port int = 5002
-	startConsolidatorServer(c_port,opts)
+	go startConsolidatorServer(c_port,opts)
 	
 
 
@@ -164,5 +164,5 @@ func main() {
 
 	
 	//FileServer
-
+	select {}
 }
