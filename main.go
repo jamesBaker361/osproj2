@@ -7,9 +7,9 @@ import (
 	"log"
 	"context"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/examples/data"
-	"google.golang.org/protobuf/proto"
+	//"google.golang.org/grpc/credentials"
+	//"google.golang.org/grpc/examples/data"
+	//"google.golang.org/protobuf/proto"
 	pb"project/grpc/proto"
 )
 
