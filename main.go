@@ -128,7 +128,7 @@ func main() {
 
 	// Print the file size
 	fmt.Printf("File size of %s is %d bytes\n", *dataPath, fileSize)
-	total_jobs :=fileSize/*N
+	total_jobs :=fileSize / N
 	fmt.Printf("Total jobs: %d\n",total_jobs)
 
 	file, err := os.Open(*configPath)
