@@ -113,9 +113,21 @@ func main() {
 	fmt.Println("Data file path:", *dataPath)
 	fmt.Println("Config file path:", *configPath)
 
+	// Get file info
+	fileInfo, err := os.Stat(dataPath)
+	if err != nil {
+		log.Fatalf("Error getting file info: %v", err)
+	}
+
+	// Get file size in bytes
+	fileSize := fileInfo.Size()
+
+	// Print the file size
+	fmt.Printf("File size of %s is %d bytes\n", dataPath, fileSize)
+
 	file, err := os.Open(*configPath)
 	if err != nil {
-		fmt.Println("Error opening file:", err)
+		fmt.Println("Error opening config file:", err)
 		return
 	}
 	defer file.Close()
@@ -176,6 +188,10 @@ func main() {
 	
 	//FileServer
 	go startFilesystemServer(f_port,opts)
+
+	
+
+	
 
 	select {}
 }
