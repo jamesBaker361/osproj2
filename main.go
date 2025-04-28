@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	pb"grpc/proto"
+	pb"project/grpc/proto"
 )
 
 type routeGuideServer struct {
