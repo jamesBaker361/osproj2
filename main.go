@@ -73,7 +73,7 @@ func startDispatcherServer(d_port int,opts []grpc.ServerOption,server Dispatcher
 	log.Printf("gRPC server listening on port %d...", d_port)
 
 	d_grpcServer := grpc.NewServer(opts...)
-	pb.RegisterDispatcherServiceServer(d_grpcServer, server())
+	pb.RegisterDispatcherServiceServer(d_grpcServer, server)
 	d_grpcServer.Serve(d_lis)
 }
 
