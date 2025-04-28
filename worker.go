@@ -8,6 +8,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"context"
+	"time"
 
 	"google.golang.org/grpc"
 	//"google.golang.org/grpc/credentials"
@@ -15,6 +17,20 @@ import (
 	//"google.golang.org/protobuf/proto"
 	pb"project/grpc/proto"
 )
+
+func sendDispatcherRequest(client pb.DispatcherServiceClient) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	request := &pb.DispatcherRequest{JobId: 1}
+	response, err := client.AcceptRequest(ctx, request)
+	if err != nil {
+		log.Fatalf("sendDispatcherRequest failed: %v", err)
+	} else {
+		fmt.Printf("Received response: JobId=%d, NChunks=%d, StartingIndex=%d\n",
+			response.JobId, response.NChunks, response.StartingIndex)
+	}
+}
 
 func main() {
 	// command-line flags
@@ -79,7 +95,7 @@ func main() {
 	var d_port int = ports[0]
 	//var c_port int = ports[1]
 	//var f_port int = ports[2]
-	var opts []grpc.ServerOption
+	var opts []grpc.DialOption
 
 	serverAddr := fmt.Sprintf("localhost:%d", d_port)
 
@@ -89,5 +105,5 @@ func main() {
 		log.Fatalf("fail to dial: %v", err)
 	}
 	defer conn.Close()
-	client:=pb.NewDispatcherServiceClient{}
+	client:=pb.NewDispatcherServiceClient(conn)
 }
