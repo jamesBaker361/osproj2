@@ -7,7 +7,15 @@ import (
 )
 
 type DispatcherServer struct {
-pb.UnimplementedDispatcherServiceServer 
+	pb.UnimplementedDispatcherServiceServer 
+}
+
+type ConsolidatorServer struct {
+	pb.UnimplementedConsolidatorServiceServer
+}
+
+type FilesystemServer struct {
+	pb.UnimplementedFilesystemServiceServer
 }
 
 func (s *DispatcherServer )  AcceptRequest(disreq *pb.DispatcherRequest)  *pb.DispatcherResponse {
