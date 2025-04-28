@@ -56,6 +56,29 @@ func (s *FilesystemServer ) AcceptRequest(_ context.Context, fsreq *pb.Filesyste
 
 }
 
+func startDispatcherServer(d_port int,opts []grpc.ServerOption){
+	d_lis, d_err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
+	if d_err != nil {
+		log.Fatalf("failed to listen: %v", d_err)
+	}
+
+	d_grpcServer := grpc.NewServer(opts...)
+	pb.RegisterDispatcherServiceServer(d_grpcServer, newDispatcherServer())
+	d_grpcServer.Serve(d_lis)
+}
+
+func startConsolidatorServer(c_port int,opts []grpc.ServerOption) {
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", c_port))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	
+
+	grpcServer := grpc.NewServer(opts...)
+	pb.RegisterConsolidatorServiceServer(grpcServer, newConsolidatorServer())
+	grpcServer.Serve(lis)
+}
+
 
 func main() {
 	// command-line flags
@@ -124,31 +147,20 @@ func main() {
 	var d_port int = ports[0]
 	var c_port int = ports[1]
 	//var f_port int = ports[2]
+	var opts []grpc.ServerOption
+
+	//Dispatcher
+	//var d_port int = 5001
+	startDispatcherServer(d_port,opts)
 
 	//Consolidator
 	//var c_port int = 5002
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", c_port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	var opts []grpc.ServerOption
-
-	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterConsolidatorServiceServer(grpcServer, newConsolidatorServer())
-	grpcServer.Serve(lis)
+	startConsolidatorServer(c_port,opts)
+	
 
 
 	
-	//Dispatcher
-	//var d_port int = 5001
-	d_lis, d_err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
-	if d_err != nil {
-		log.Fatalf("failed to listen: %v", d_err)
-	}
-
-	d_grpcServer := grpc.NewServer(opts...)
-	pb.RegisterDispatcherServiceServer(d_grpcServer, newDispatcherServer())
-	d_grpcServer.Serve(d_lis)
+	
 
 	
 	//FileServer
