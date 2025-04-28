@@ -14,7 +14,7 @@ for port in "${ports[@]}"; do
     else
         # Kill each process found on the port
         for pid in $pids; do
-            kill $pid
+            kill -9 $pid
             if [ $? -eq 0 ]; then
                 echo "Successfully killed process with PID $pid on port $port."
             else
