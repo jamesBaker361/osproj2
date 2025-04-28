@@ -114,7 +114,7 @@ func main() {
 	fmt.Println("Config file path:", *configPath)
 
 	// Get file info
-	fileInfo, err := os.Stat(dataPath)
+	fileInfo, err := os.Stat(*dataPath)
 	if err != nil {
 		log.Fatalf("Error getting file info: %v", err)
 	}
