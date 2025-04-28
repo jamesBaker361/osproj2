@@ -11,6 +11,7 @@ message DispatcherResponse {
     int32 StartingIndex = 3;
 }
 
+
 service DispatcherService {
     rpc AcceptRequest (DispatcherRequest) returns (DispatcherResponse) {}
 }
