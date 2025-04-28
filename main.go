@@ -123,7 +123,7 @@ func main() {
 	fileSize := fileInfo.Size()
 
 	// Print the file size
-	fmt.Printf("File size of %s is %d bytes\n", dataPath, fileSize)
+	fmt.Printf("File size of %s is %d bytes\n", *dataPath, fileSize)
 
 	file, err := os.Open(*configPath)
 	if err != nil {
