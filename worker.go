@@ -50,7 +50,7 @@ func getPrimes(numbers []uint64,prime_channel chan int) {
 		}
 
 	}
-	fmt.printf("prime results %d\n",result)
+	fmt.Printf("prime results %d\n",result)
 	prime_channel<-result
 }
 
