@@ -177,9 +177,9 @@ func main() {
 		if f_err != nil {
 			log.Fatalf("fail to grpc.NewClient(filesystemServerAddr): %v", f_err)
 		}
-		defer f_conn.close()
+		defer f_conn.Close()
 		f_client:=pb.NewFilesystemServiceClient(f_conn)
-		f_response,f_err:=sendFilesystemRequest(f_client,response.StartingIndex,C)
+		f_response,f_err:=sendFilesystemRequest(f_client,response.StartingIndex,int32(C))
 		if f_err != nil {
 			log.Fatalf("fail to fs reques: %v",f_err)
 		}
