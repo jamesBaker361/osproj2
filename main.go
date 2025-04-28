@@ -84,9 +84,9 @@ func main() {
 		log.Fatalf("failed to listen: %v", d_err)
 	}
 
-	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterDispatcherServiceServer(grpcServer, newDispatcherServer())
-	grpcServer.Serve(lis)
+	d_grpcServer := grpc.NewServer(opts...)
+	pb.RegisterDispatcherServiceServer(d_grpcServer, newDispatcherServer())
+	d_grpcServer.Serve(d_lis)
 
 	
 	//FileServer
