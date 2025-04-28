@@ -13,17 +13,13 @@ import (
 	pb"project/grpc/proto"
 )
 
+
+
+
 type DispatcherServer struct {
 	pb.UnimplementedDispatcherServiceServer 
 }
 
-type ConsolidatorServer struct {
-	pb.UnimplementedConsolidatorServiceServer
-}
-
-type FilesystemServer struct {
-	pb.UnimplementedFilesystemServiceServer
-}
 
 func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.DispatcherRequest)  (*pb.DispatcherResponse,error) {
 		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1},nil
@@ -32,6 +28,23 @@ func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.Dispatc
 func newDispatcherServer() *DispatcherServer {
 	s:=&DispatcherServer{}
 	return s
+}
+
+type ConsolidatorServer struct {
+	pb.UnimplementedConsolidatorServiceServer
+}
+
+func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.ConsolidatorRequest) (*pb.ConsolidatorResponse,error) {
+	return &pb.ConsolidatorRequest{}
+}
+
+func new ConsolidatorServer() *ConsolidatorServer {
+	s:=&ConsolidatorServer()
+	return s
+}
+
+type FilesystemServer struct {
+	pb.UnimplementedFilesystemServiceServer
 }
 
 
@@ -51,13 +64,22 @@ func main() {
 	fmt.Println("Config file path:", *configPath)
 
 	//Consolidator
+	var c_port int = 5002
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", c_port))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	var opts []grpc.ServerOption
 
+	grpcServer := grpc.NewServer(opts...)
+	pb.RegisterConsolidatorServiceServer(grpcServer, newConsolidatorServer())
+	grpcServer.Serve(lis)
 
 
 	
 	//Dispatcher
-	var port int = 5001
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
+	var d_port int = 5001
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
