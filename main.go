@@ -104,16 +104,45 @@ func startFilesystemServer(f_port int,opts []grpc.ServerOption) {
 
 func main() {
 	// command-line flags
-	N := flag.Int("N", 0, "Number of something (int)")
-	C := flag.Int("C", 0, "Another parameter (int)")
+	_N := flag.String("N", "64KB", "Number of something (int)")
+	_C := flag.String("C", "1KB", "Another parameter (int)")
 	dataPath := flag.String("data", "", "Path to the data file")
 	configPath := flag.String("config", "", "Path to the config file")
 
 	// Parse the flags
 	flag.Parse()
 
-	fmt.Println("N:", *N)
-	fmt.Println("C:", *C)
+
+	//N in {1KB, 32KB, 64KB, 256KB, 1MB, 64MB}; C in {64B, 1KB, 4KB, 8KB}.
+	N_dict := make(map[string]int)
+	N_dict["1KB"] = 1024
+	N_dict["2KB"] = 2 * 1024 //testing only: delete this!
+	N_dict["32KB"] = 32 * 1024
+	N_dict["64KB"] = 64 * 1024
+	N_dict["256KB"] = 256 * 1024
+	N_dict["1MB"] = 1024 * 1024
+	N_dict["64MB"] = 64 * 1024 * 1024
+
+	C_dict := make(map[string]int)
+	C_dict["64B"] = 64
+	C_dict["128B"] = 128 //testing only: delete this!
+	C_dict["1KB"] = 1024
+	C_dict["4KB"] = 4 * 1024
+	C_dict["8KB"] = 8 * 1024
+
+	N, existsN := N_dict[*_N]
+
+	if !existsN {
+		N = 64 * 1024
+	}
+	C, existsC := C_dict[*_C]
+
+	if !existsC {
+		C = 1024
+	}
+
+	fmt.Println("N:", N)
+	fmt.Println("C:", C)
 	fmt.Println("Data file path:", *dataPath)
 	fmt.Println("Config file path:", *configPath)
 
@@ -128,8 +157,8 @@ func main() {
 
 	// Print the file size
 	fmt.Printf("File size of %s is %d bytes\n", *dataPath, fileSize)
-	_N:=*N
-	total_jobs :=int(fileSize) / _N
+	
+	total_jobs :=int(fileSize) / N
 	fmt.Printf("Total jobs: %d\n",total_jobs)
 
 	file, err := os.Open(*configPath)
@@ -190,7 +219,7 @@ func main() {
 	dispatcher_server:=newDispatcherServer(total_jobs+1)
 	//responseQueue=dispatcher_server.responseQueue
 	for i:=0; i< total_jobs;i+=1 {
-		response:=&pb.DispatcherResponse{JobId:int32(i),StartingIndex:int32(i*_N),EndingIndex:int32((i+1)*_N)}
+		response:=&pb.DispatcherResponse{JobId:int32(i),StartingIndex:int32(i * N),EndingIndex:int32((i+1) * N)}
 		dispatcher_server.responseQueue<-response
 	}
 
