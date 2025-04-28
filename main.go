@@ -35,7 +35,7 @@ type ConsolidatorServer struct {
 }
 
 func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.ConsolidatorRequest) (*pb.ConsolidatorResponse,error) {
-	return &pb.ConsolidatorRequest{},nil
+	return &pb.ConsolidatorResponse{},nil
 }
 
 func newConsolidatorServer() *ConsolidatorServer {
