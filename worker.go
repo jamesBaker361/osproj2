@@ -11,6 +11,9 @@ import (
 	"context"
 	"time"
 	"math"
+	"bytes"
+	"encoding/binary"
+	"io"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -44,6 +47,23 @@ func getPrimes(numbers []uint64) int {
 
 	}
 	return result
+}
+
+func readAllUvarints(buf []byte) ([]uint64, error) {
+	var numbers []uint64
+	reader := bytes.NewReader(buf) // Create a reader from the byte slice
+	for {
+		var num uint64
+		err := binary.Read(reader, binary.LittleEndian, &num)
+		if err == io.EOF {
+			break // Stop when reaching the end of the buffer
+		}
+		if err != nil {
+			return nil, err // Return error if reading fails
+		}
+		numbers = append(numbers, num)
+	}
+	return numbers, nil
 }
 
 func sendDispatcherRequest(client pb.DispatcherServiceClient) (*pb.DispatcherResponse, error){
@@ -184,8 +204,13 @@ func main() {
 			if f_err != nil {
 				log.Fatalf("fail to fs reques: %v",f_err)
 			}
-			fmt.Printf("Received fs response: data0=%d,  \n",
-				f_response.Data[0])
+			fmt.Printf("Received fs response: data0=%d,  \n",f_response.Data[0])
+			numbers,byte_read_err:=readAllUvarints(f_response.Data)
+			if byte_read_err != nil {
+				log.Fatalf("byte read error: %v",byte_read_err)
+			}
+			primes:=getPrimes(numbers)
+			fmt.Printf("primes: %d\n",primes)
 		}
 	}
 }
