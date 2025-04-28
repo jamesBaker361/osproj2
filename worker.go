@@ -14,6 +14,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"io"
+	"sync"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -22,6 +23,8 @@ import (
 	//"google.golang.org/protobuf/proto"
 	pb"project/grpc/proto"
 )
+
+var wg sync.WaitGroup
 
 func isPrime(n uint64) bool {
 	if n <= 1 {
@@ -38,7 +41,8 @@ func isPrime(n uint64) bool {
 	return true
 }
 
-func getPrimes(numbers []uint64) int {
+func getPrimes(numbers []uint64,prime_channel chan int) {
+	defer wg.Done()
 	result := 0
 	for _, n := range numbers {
 		if isPrime(n) {
@@ -46,7 +50,8 @@ func getPrimes(numbers []uint64) int {
 		}
 
 	}
-	return result
+	fmt.printf("prime results %d\n",result)
+	prime_channel<-result
 }
 
 func readAllUvarints(buf []byte) ([]uint64, error) {
@@ -199,6 +204,7 @@ func main() {
 		}
 		defer f_conn.Close()
 		f_client:=pb.NewFilesystemServiceClient(f_conn)
+		prime_channel := make(chan int, 1+((response.EndingIndex-response.StartingIndex)/int32(C)))
 		for j:=response.StartingIndex; j<  response.EndingIndex; j+=int32(C){
 			f_response,f_err:=sendFilesystemRequest(f_client,j,int32(C))
 			if f_err != nil {
@@ -209,8 +215,9 @@ func main() {
 			if byte_read_err != nil {
 				log.Fatalf("byte read error: %v",byte_read_err)
 			}
-			primes:=getPrimes(numbers)
-			fmt.Printf("primes: %d\n",primes)
+			wg.Add(1)
+			go getPrimes(numbers, prime_channel)
+			
 		}
 	}
 }
