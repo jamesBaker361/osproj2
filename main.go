@@ -21,16 +21,20 @@ import (
 
 
 type DispatcherServer struct {
-	pb.UnimplementedDispatcherServiceServer 
+	pb.UnimplementedDispatcherServiceServer
+	responseQueue chan *pb.DispatcherResponse
 }
 
 
 func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.DispatcherRequest)  (*pb.DispatcherResponse,error) {
-		return &pb.DispatcherResponse{JobId:1,NChunks:1,StartingIndex:1},nil
+		job := <-s.responseQueue // take the next available job (blocking if empty)
+		return job, nil
 	}
 
-func newDispatcherServer() *DispatcherServer {
-	s:=&DispatcherServer{}
+func newDispatcherServer(buffer_size int) *DispatcherServer {
+	s:=&DispatcherServer{
+		jobQueue: make(chan *pb.DispatcherResponse, buffer_size)
+	}
 	return s
 }
 
@@ -61,7 +65,7 @@ func newFilesystemServer() *FilesystemServer {
 	return s
 }
 
-func startDispatcherServer(d_port int,opts []grpc.ServerOption){
+func startDispatcherServer(d_port int,opts []grpc.ServerOption,server DispatcherServer){
 	d_lis, d_err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
 	if d_err != nil {
 		log.Fatalf("failed to listen: %v", d_err)
@@ -69,7 +73,7 @@ func startDispatcherServer(d_port int,opts []grpc.ServerOption){
 	log.Printf("gRPC server listening on port %d...", d_port)
 
 	d_grpcServer := grpc.NewServer(opts...)
-	pb.RegisterDispatcherServiceServer(d_grpcServer, newDispatcherServer())
+	pb.RegisterDispatcherServiceServer(d_grpcServer, server())
 	d_grpcServer.Serve(d_lis)
 }
 
