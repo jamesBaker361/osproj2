@@ -6,9 +6,7 @@ import (
 	pb"project/grpc/proto"
 )
 
-type routeGuideServer struct {
-	pb.UnimplementedRouteGuideServer
-}
+
 
 func main() {
 	// command-line flags
