@@ -56,8 +56,25 @@ type FilesystemServer struct {
 }
 
 func (s *FilesystemServer ) AcceptRequest(_ context.Context, fsreq *pb.FilesystemRequest) ( *pb.FilesystemResponse,error) {
-	return &pb.FilesystemResponse{Data:[]byte("hello world")},nil 
+	//return &pb.FilesystemResponse{Data:[]byte("hello world")},nil 
+	fileName:=fsreq.FileName
+	file, err := os.Open(fileName)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	_, err = file.Seek(int64(fsreq.StartingIndex), 0)
+	if err != nil {
+		return nil, err
+	}
 
+	buffer := make([]byte, fsreq.NBytes)
+	bytesRead, err := file.Read(buffer)
+	if err != nil {
+		return nil, err
+	}
+	buffer=buffer[:bytesRead]
+	return &pb.FilesystemResponse{Data:buffer},nil
 }
 
 func newFilesystemServer() *FilesystemServer {
