@@ -62,13 +62,29 @@ func sendDispatcherRequest(client pb.DispatcherServiceClient) (*pb.DispatcherRes
 
 func main() {
 	// command-line flags
-	C := flag.Int("C", 0, "Another parameter (int)")
+	_C := flag.String("C", "1KB", "Chunk size")
 	configPath := flag.String("config", "", "Path to the config file")
+	//N in {1KB, 32KB, 64KB, 256KB, 1MB, 64MB}; C in {64B, 1KB, 4KB, 8KB}.
+
+
+	C_dict := make(map[string]int)
+	C_dict["64B"] = 64
+	C_dict["128B"] = 128 //testing only: delete this!
+	C_dict["1KB"] = 1024
+	C_dict["4KB"] = 4 * 1024
+	C_dict["8KB"] = 8 * 1024
+
+
+	C, existsC := C_dict[_C]
+
+	if !existsC {
+		C = 1024
+	}
 
 	// Parse the flags
 	flag.Parse()
 
-	fmt.Println("C:", *C)
+	fmt.Println("C:", C)
 	fmt.Println("Config file path:", *configPath)
 
 	file, err := os.Open(*configPath)
