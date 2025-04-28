@@ -128,6 +128,7 @@ func main() {
 
 	// Print the file size
 	fmt.Printf("File size of %s is %d bytes\n", *dataPath, fileSize)
+	fmt.Printf("Total jobs: %d\n",fileSize/N)
 
 	file, err := os.Open(*configPath)
 	if err != nil {
@@ -184,6 +185,7 @@ func main() {
 	var opts []grpc.ServerOption
 
 	//Dispatcher
+	dispatcher_server:=newDispatcherServer(1000000)
 	go startDispatcherServer(d_port,opts)
 
 	//Consolidator
