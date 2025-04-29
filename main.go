@@ -245,7 +245,7 @@ func main() {
 	go startDispatcherServer(d_port,opts,dispatcher_server)
 
 	//Consolidator
-	primeQueue chan int
+	primeQueue:=make(chan int, total_jobs+1)
 	go startConsolidatorServer(c_port,opts,primeQueue)
 
 	
