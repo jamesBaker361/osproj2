@@ -1,6 +1,6 @@
-#!/bin/bash
-M=$1  # Get the first command-line argument
-C=$2
+
+M=$2  # Get the first command-line argument
+C=$3
 # Check if it's a valid integer
 if ! [[ "$count" =~ ^[0-9]+$ ]]; then
     echo "Please provide a positive integer."
