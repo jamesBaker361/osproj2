@@ -294,8 +294,15 @@ func main() {
 		total_primes+=primes
 		count++
 	}
-
 	fmt.Printf("Total Primes %d\n",total_primes)
+	arr:=make(int[],total_jobs)
+	t_count:=0
+	for t_count<total_jobs{
+		arr[count]<-int(timeQueue)
+		count++
+	}
+
+	min, max, median, avg=computeStats(arr)
 	
 
 	select {}
