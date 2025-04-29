@@ -105,7 +105,8 @@ func main() {
 	_C := flag.String("C", "1KB", "Chunk size")
 	configPath := flag.String("config", "", "Path to the config file")
 	//N in {1KB, 32KB, 64KB, 256KB, 1MB, 64MB}; C in {64B, 1KB, 4KB, 8KB}.
-
+	// Parse the flags
+	flag.Parse()
 
 	C_dict := make(map[string]int)
 	C_dict["64B"] = 64
@@ -122,8 +123,7 @@ func main() {
 		C = 1024
 	}
 
-	// Parse the flags
-	flag.Parse()
+	
 
 	fmt.Println("C:", C)
 	fmt.Println("Config file path:", *configPath)
