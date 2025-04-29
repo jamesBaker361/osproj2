@@ -27,6 +27,7 @@ type DispatcherServer struct {
 
 
 func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.DispatcherRequest)  (*pb.DispatcherResponse,error) {
+		fmt.Printf("Received DispatcherRequest\n")
 		job := <-s.responseQueue // take the next available job (blocking if empty)
 		return job, nil
 	}
@@ -46,7 +47,8 @@ type ConsolidatorServer struct {
 
 func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.ConsolidatorRequest) (*pb.ConsolidatorResponse,error) {
 	s.primeQueue <-int(conreq.NPrimes)
-	fmt.Printf("primes %d\n",conreq.NPrimes)
+	s.timeQueue<-int(conreq.TimeElapsed)
+	fmt.Printf("Received ConsolidatorRequest\n")
 	return &pb.ConsolidatorResponse{},nil
 }
 
@@ -61,6 +63,7 @@ type FilesystemServer struct {
 }
 
 func (s *FilesystemServer ) AcceptRequest(_ context.Context, fsreq *pb.FilesystemRequest) ( *pb.FilesystemResponse,error) {
+	fmt.Printf("Received FilesystemRequest\n")
 	//return &pb.FilesystemResponse{Data:[]byte("hello world")},nil 
 	fileName:=s.FileName
 	file, err := os.Open(fileName)
