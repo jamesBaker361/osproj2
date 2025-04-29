@@ -300,8 +300,8 @@ func main() {
 	for t_count<total_jobs{
 
 		t:=<-timeQueue
-		arr[count]=int(t)
-		count++
+		arr[t_count]=int(t)
+		t_count++
 	}
 
 	min, max, median, avg:=computeStats(arr)
