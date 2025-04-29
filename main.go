@@ -44,6 +44,8 @@ type ConsolidatorServer struct {
 }
 
 func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.ConsolidatorRequest) (*pb.ConsolidatorResponse,error) {
+	s.primeQueue <-conreq.nPrimes
+	fmt.Println("primes %d\n",conreq.nPrimes)
 	return &pb.ConsolidatorResponse{},nil
 }
 

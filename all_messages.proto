@@ -40,10 +40,7 @@ service FilesystemService {
 }
 
 message ConsolidatorRequest {
-    int32 startingIndex = 1;
-    string fileName=2;
-    int32 nBytes =3;
-    int32 nPrimes = 4;
+    int32 nPrimes = 1;
 }
 
 message ConsolidatorResponse {
