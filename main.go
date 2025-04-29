@@ -121,7 +121,7 @@ func newFilesystemServer(FileName string) *FilesystemServer {
 	return s
 }
 
-func startDispatcherServer(d_port int,opts []grpc.ServerOption,server *DispatcherServer,beginJobQueue chan int){
+func startDispatcherServer(d_port int,opts []grpc.ServerOption,server *DispatcherServer){
 	d_lis, d_err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
 	if d_err != nil {
 		log.Fatalf("failed to listen: %v", d_err)
