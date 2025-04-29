@@ -220,13 +220,14 @@ func main() {
 			}
 			wg.Add(1)
 			go getPrimes(numbers, prime_channel)
-			wg.Wait()
-			close(prime_channel)
-			prime_count:=0
-			for prime:=range(prime_channel) {
-				prime_count+=prime
-			}
-			fmt.Println("total primes %d\n",prime_count)
+			
 		}
+		wg.Wait()
+		close(prime_channel)
+		prime_count:=0
+		for prime:=range(prime_channel) {
+			prime_count+=prime
+		}
+		fmt.Println("total primes %d\n",prime_count)
 	}
 }
