@@ -1,3 +1,4 @@
+#!/bin/bash
 M=$1  # Get the first command-line argument
 C=$2
 # Check if it's a valid integer
