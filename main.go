@@ -65,7 +65,7 @@ func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.Dispatc
 func newDispatcherServer(buffer_size int) *DispatcherServer {
 	s:=&DispatcherServer{
 		responseQueue: make(chan *pb.DispatcherResponse, buffer_size),
-		beginJobQueue:make(chan int,1),
+		beginJobQueue:make(chan int,buffer_size),
 	}
 	return s
 }
