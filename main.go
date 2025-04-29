@@ -299,7 +299,7 @@ func main() {
 	t_count:=0
 	for t_count<total_jobs{
 
-		t<-timeQueue
+		t:=<-timeQueue
 		arr[count]=int(t)
 		count++
 	}
