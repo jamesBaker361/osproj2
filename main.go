@@ -167,6 +167,7 @@ func main() {
 
 	//N in {1KB, 32KB, 64KB, 256KB, 1MB, 64MB}; C in {64B, 1KB, 4KB, 8KB}.
 	N_dict := make(map[string]int)
+	N_dict["128B"] = 128
 	N_dict["1KB"] = 1024
 	N_dict["2KB"] = 2 * 1024 //testing only: delete this!
 	N_dict["32KB"] = 32 * 1024
