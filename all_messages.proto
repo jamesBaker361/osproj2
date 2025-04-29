@@ -41,6 +41,7 @@ service FilesystemService {
 
 message ConsolidatorRequest {
     int32 nPrimes = 1;
+    int timeElapsed=2;
 }
 
 message ConsolidatorResponse {

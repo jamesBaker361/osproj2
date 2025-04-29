@@ -248,7 +248,7 @@ func main() {
 		}
 		defer c_conn.Close()
 		c_client:=pb.NewConsolidatorServiceClient(c_conn)
-		sendConsolidatorRequest(c_client,prime_count)
+		sendConsolidatorRequest(c_client,prime_count,start_time)
 
 	}
 }
