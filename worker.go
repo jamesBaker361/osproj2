@@ -50,7 +50,7 @@ func getPrimes(numbers []uint64,prime_channel chan int) {
 		}
 
 	}
-	fmt.Printf("prime results %d\n",result)
+	//fmt.Printf("prime results %d\n",result)
 	prime_channel<-result
 }
 
@@ -98,6 +98,17 @@ func sendFilesystemRequest(client pb.FilesystemServiceClient,startingIndex int32
 		return response,err
 	}
 
+}
+
+func sendConsolidatorRequest(client pb.ConsolidatorServiceClient, nPrimes int){
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	request:=&pb.ConsolidatorRequest{NPrimes:int32(nPrimes)}
+	_,err:=client.AcceptRequest(ctx,request)
+	if err != nil {
+		log.Fatalf("sendConsolidatorRequest failed: %v", err)
+	} 
 }
 
 func main() {
@@ -178,7 +189,7 @@ func main() {
 	fmt.Println("Ports:", ports)
 
 	var d_port int = ports[0]
-	//var c_port int = ports[1]
+	var c_port int = ports[1]
 	var f_port int = ports[2]
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -229,5 +240,15 @@ func main() {
 			prime_count+=prime
 		}
 		fmt.Printf("total primes %d\n",prime_count)
+		consolidatorServerAddr:=fmt.Sprintf("localhost:%d", c_port)
+		c_conn, c_err := grpc.NewClient(consolidatorServerAddr, opts...)
+
+		if c_err != nil {
+			log.Fatalf("fail to connect grpc.NewClient(consolidatorServerAddr: %v", c_err)
+		}
+		defer c_conn.Close()
+		c_client:=pb.NewConsolidatorServiceClient(c_conn)
+		sendConsolidatorRequest(c_client,prime_count)
+
 	}
 }
