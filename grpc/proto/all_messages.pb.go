@@ -312,6 +312,7 @@ func (x *FilesystemMetadataResponse) GetTotalBytes() int32 {
 type ConsolidatorRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	NPrimes       int32                  `protobuf:"varint,1,opt,name=nPrimes,proto3" json:"nPrimes,omitempty"`
+	TimeElapsed   int32                  `protobuf:"varint,2,opt,name=timeElapsed,proto3" json:"timeElapsed,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -349,6 +350,13 @@ func (*ConsolidatorRequest) Descriptor() ([]byte, []int) {
 func (x *ConsolidatorRequest) GetNPrimes() int32 {
 	if x != nil {
 		return x.NPrimes
+	}
+	return 0
+}
+
+func (x *ConsolidatorRequest) GetTimeElapsed() int32 {
+	if x != nil {
+		return x.TimeElapsed
 	}
 	return 0
 }
@@ -410,9 +418,10 @@ const file_all_messages_proto_rawDesc = "" +
 	"\x1aFilesystemMetadataResponse\x12\x1e\n" +
 	"\n" +
 	"totalBytes\x18\x01 \x01(\x05R\n" +
-	"totalBytes\"/\n" +
+	"totalBytes\"Q\n" +
 	"\x13ConsolidatorRequest\x12\x18\n" +
-	"\anPrimes\x18\x01 \x01(\x05R\anPrimes\"\x16\n" +
+	"\anPrimes\x18\x01 \x01(\x05R\anPrimes\x12 \n" +
+	"\vtimeElapsed\x18\x02 \x01(\x05R\vtimeElapsed\"\x16\n" +
 	"\x14ConsolidatorResponse2O\n" +
 	"\x11DispatcherService\x12:\n" +
 	"\rAcceptRequest\x12\x12.DispatcherRequest\x1a\x13.DispatcherResponse\"\x002\xa3\x01\n" +
