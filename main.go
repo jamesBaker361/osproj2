@@ -45,7 +45,7 @@ type ConsolidatorServer struct {
 
 func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.ConsolidatorRequest) (*pb.ConsolidatorResponse,error) {
 	s.primeQueue <-int(conreq.NPrimes)
-	fmt.Println("primes %d\n",conreq.NPrimes)
+	fmt.Printf("primes %d\n",conreq.NPrimes)
 	return &pb.ConsolidatorResponse{},nil
 }
 
@@ -254,7 +254,13 @@ func main() {
 	//FileServer
 	go startFilesystemServer(f_port,opts,*dataPath)
 
-	
+	count:=0
+	total_primes:=0
+	for count<total_jobs{
+		primes:=<-primeQueue
+		total_primes+=primes
+		count++
+	}
 
 	
 
