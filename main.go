@@ -262,6 +262,7 @@ func main() {
 		count++
 	}
 
+	fmt.Printf("Total Primes %d\n",total_primes)
 	
 
 	select {}
