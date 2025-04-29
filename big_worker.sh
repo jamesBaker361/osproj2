@@ -1,11 +1,11 @@
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
-go run worker.go -C=64B -config=config.txt
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
+go run worker.go -C=64B -config=config.txt &
