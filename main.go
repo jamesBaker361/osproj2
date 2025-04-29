@@ -11,13 +11,40 @@ import (
 	"strconv"
 	"os"
 	"strings"
+	"sort"
 	//"google.golang.org/grpc/credentials"
 	//"google.golang.org/grpc/examples/data"
 	//"google.golang.org/protobuf/proto"
 	pb"project/grpc/proto"
 )
 
+func computeStats(arr []int) (int, int, float64, float64) {
+	if len(arr) == 0 {
+		return 0, 0, 0, 0
+	}
 
+	sort.Ints(arr) // Sort for min, max, and median calculations
+
+	min := arr[0]
+	max := arr[len(arr)-1]
+
+	// Compute median
+	var median float64
+	if len(arr)%2 == 0 {
+		median = float64(arr[len(arr)/2-1]+arr[len(arr)/2]) / 2.0
+	} else {
+		median = float64(arr[len(arr)/2])
+	}
+
+	// Compute average
+	sum := 0
+	for _, num := range arr {
+		sum += num
+	}
+	avg := float64(sum) / float64(len(arr))
+
+	return min, max, median, avg
+}
 
 
 type DispatcherServer struct {
@@ -266,6 +293,8 @@ func main() {
 		total_primes+=primes
 		count++
 	}
+
+	stat_list int[]
 
 	fmt.Printf("Total Primes %d\n",total_primes)
 	
