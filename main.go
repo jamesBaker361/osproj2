@@ -305,7 +305,7 @@ func main() {
 	}
 
 	min, max, median, avg:=computeStats(arr)
-	fmt.Printf("min %d max %d median %.2f avg %.2f",min, max, median, avg)
+	fmt.Printf("min %d max %d median %.2f avg %.2f\n",min, max, median, avg)
 	
 
 	select {}
