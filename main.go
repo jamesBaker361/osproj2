@@ -12,6 +12,7 @@ import (
 	"os"
 	"strings"
 	"sort"
+	"time"
 	//"google.golang.org/grpc/credentials"
 	//"google.golang.org/grpc/examples/data"
 	//"google.golang.org/protobuf/proto"
@@ -50,18 +51,21 @@ func computeStats(arr []int) (int, int, float64, float64) {
 type DispatcherServer struct {
 	pb.UnimplementedDispatcherServiceServer
 	responseQueue chan *pb.DispatcherResponse
+	beginJobQueue chan int
 }
 
 
 func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.DispatcherRequest)  (*pb.DispatcherResponse,error) {
 		fmt.Printf("Received DispatcherRequest\n")
 		job := <-s.responseQueue // take the next available job (blocking if empty)
+		s.beginJobQueue<-int(time.Now().Unix())
 		return job, nil
 	}
 
 func newDispatcherServer(buffer_size int) *DispatcherServer {
 	s:=&DispatcherServer{
 		responseQueue: make(chan *pb.DispatcherResponse, buffer_size),
+		beginJobQueue:make(chan int,1)
 	}
 	return s
 }
@@ -117,7 +121,7 @@ func newFilesystemServer(FileName string) *FilesystemServer {
 	return s
 }
 
-func startDispatcherServer(d_port int,opts []grpc.ServerOption,server *DispatcherServer){
+func startDispatcherServer(d_port int,opts []grpc.ServerOption,server *DispatcherServer,beginJobQueue chan int){
 	d_lis, d_err := net.Listen("tcp", fmt.Sprintf("localhost:%d", d_port))
 	if d_err != nil {
 		log.Fatalf("failed to listen: %v", d_err)
@@ -294,6 +298,7 @@ func main() {
 		total_primes+=primes
 		count++
 	}
+	end=int(time.Now().Unix())
 	fmt.Printf("Total Primes %d\n",total_primes)
 	arr:=make([]int,total_jobs)
 	t_count:=0
@@ -306,6 +311,8 @@ func main() {
 
 	min, max, median, avg:=computeStats(arr)
 	fmt.Printf("min %d max %d median %.2f avg %.2f\n",min, max, median, avg)
+	start:=<-dispatcher_server.beginJobQueue
+	fmt.Printf("total time elapsed %d" end-start)
 	
 
 	select {}
