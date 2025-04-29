@@ -199,57 +199,65 @@ func main() {
 	conn, err := grpc.NewClient(dispatcherServerAddr, opts...)
 
 	if err != nil {
-		log.Fatalf("fail to dial: %v", err)
+		log.Fatalf("fail to connect to dispatcher: %v", err)
 	}
 	defer conn.Close()
-	start := int32(time.Now().Unix())
+	
 	client:=pb.NewDispatcherServiceClient(conn)
-	response,err:=sendDispatcherRequest(client)
-	if err!=nil{
-		log.Fatalf("sendDispatcherRequest failed: %v", err)
-	}else{
-		fmt.Printf("Received response: JobId=%d,  StartingIndex=%d, EndingIndex=%d\n",
-			response.JobId, response.StartingIndex,response.EndingIndex)
-		filesystemServerAddr := fmt.Sprintf("localhost:%d", f_port)
-		f_conn, f_err := grpc.NewClient(filesystemServerAddr, opts...)
-		if f_err != nil {
-			log.Fatalf("fail to grpc.NewClient(filesystemServerAddr): %v", f_err)
-		}
-		defer f_conn.Close()
-		f_client:=pb.NewFilesystemServiceClient(f_conn)
 
-		
-		prime_channel := make(chan int, 1+((response.EndingIndex-response.StartingIndex)/int32(C)))
-		for j:=response.StartingIndex; j<  response.EndingIndex; j+=int32(C){
-			f_response,f_err:=sendFilesystemRequest(f_client,j,int32(C))
-			if f_err != nil {
-				log.Fatalf("fail to fs reques: %v",f_err)
-			}
-			//fmt.Printf("Received fs response: data0=%d,  \n",f_response.Data[0])
-			numbers,byte_read_err:=readAllUvarints(f_response.Data)
-			if byte_read_err != nil {
-				log.Fatalf("byte read error: %v",byte_read_err)
-			}
-			wg.Add(1)
-			go getPrimes(numbers, prime_channel)
+	filesystemServerAddr := fmt.Sprintf("localhost:%d", f_port)
+	f_conn, f_err := grpc.NewClient(filesystemServerAddr, opts...)
+	if f_err != nil {
+		log.Fatalf("fail to grpc.NewClient(filesystemServerAddr): %v", f_err)
+	}
+	defer f_conn.Close()
+	f_client:=pb.NewFilesystemServiceClient(f_conn)
+
+	consolidatorServerAddr:=fmt.Sprintf("localhost:%d", c_port)
+	c_conn, c_err := grpc.NewClient(consolidatorServerAddr, opts...)
+
+	if c_err != nil {
+		log.Fatalf("fail to connect grpc.NewClient(consolidatorServerAddr: %v", c_err)
+	}
+	defer c_conn.Close()
+	c_client:=pb.NewConsolidatorServiceClient(c_conn)
+
+	for 1>0{
+		start := int32(time.Now().Unix())
+		response,err:=sendDispatcherRequest(client)
+		if err!=nil{
+			log.Fatalf("sendDispatcherRequest failed: %v", err)
+		}else{
+			fmt.Printf("Received response: JobId=%d,  StartingIndex=%d, EndingIndex=%d\n",
+				response.JobId, response.StartingIndex,response.EndingIndex)
 			
-		}
-		wg.Wait()
-		close(prime_channel)
-		prime_count:=0
-		for prime:=range(prime_channel) {
-			prime_count+=prime
-		}
-		fmt.Printf("total primes %d\n",prime_count)
-		consolidatorServerAddr:=fmt.Sprintf("localhost:%d", c_port)
-		c_conn, c_err := grpc.NewClient(consolidatorServerAddr, opts...)
 
-		if c_err != nil {
-			log.Fatalf("fail to connect grpc.NewClient(consolidatorServerAddr: %v", c_err)
-		}
-		defer c_conn.Close()
-		c_client:=pb.NewConsolidatorServiceClient(c_conn)
-		sendConsolidatorRequest(c_client,prime_count,start)
+			
+			prime_channel := make(chan int, 1+((response.EndingIndex-response.StartingIndex)/int32(C)))
+			for j:=response.StartingIndex; j<  response.EndingIndex; j+=int32(C){
+				f_response,f_err:=sendFilesystemRequest(f_client,j,int32(C))
+				if f_err != nil {
+					log.Fatalf("fail to fs reques: %v",f_err)
+				}
+				//fmt.Printf("Received fs response: data0=%d,  \n",f_response.Data[0])
+				numbers,byte_read_err:=readAllUvarints(f_response.Data)
+				if byte_read_err != nil {
+					log.Fatalf("byte read error: %v",byte_read_err)
+				}
+				wg.Add(1)
+				go getPrimes(numbers, prime_channel)
+				
+			}
+			wg.Wait()
+			close(prime_channel)
+			prime_count:=0
+			for prime:=range(prime_channel) {
+				prime_count+=prime
+			}
+			fmt.Printf("total primes %d\n",prime_count)
+			
+			sendConsolidatorRequest(c_client,prime_count,start)
 
+		}
 	}
 }
