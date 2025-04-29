@@ -100,10 +100,10 @@ func sendFilesystemRequest(client pb.FilesystemServiceClient,startingIndex int32
 
 }
 
-func sendConsolidatorRequest(client pb.ConsolidatorServiceClient, nPrimes int){
+func sendConsolidatorRequest(client pb.ConsolidatorServiceClient, nPrimes int,start int){
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
+	end:= time.Now() 
 	request:=&pb.ConsolidatorRequest{NPrimes:int32(nPrimes)}
 	_,err:=client.AcceptRequest(ctx,request)
 	if err != nil {
@@ -202,6 +202,7 @@ func main() {
 		log.Fatalf("fail to dial: %v", err)
 	}
 	defer conn.Close()
+	start := time.Now()
 	client:=pb.NewDispatcherServiceClient(conn)
 	response,err:=sendDispatcherRequest(client)
 	if err!=nil{
@@ -248,7 +249,7 @@ func main() {
 		}
 		defer c_conn.Close()
 		c_client:=pb.NewConsolidatorServiceClient(c_conn)
-		sendConsolidatorRequest(c_client,prime_count,start_time)
+		sendConsolidatorRequest(c_client,prime_count,start)
 
 	}
 }
