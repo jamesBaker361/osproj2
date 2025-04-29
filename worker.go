@@ -228,6 +228,6 @@ func main() {
 		for prime:=range(prime_channel) {
 			prime_count+=prime
 		}
-		fmt.Println("total primes %d\n",prime_count)
+		fmt.Printf("total primes %d\n",prime_count)
 	}
 }
