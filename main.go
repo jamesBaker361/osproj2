@@ -298,11 +298,13 @@ func main() {
 	arr:=make([]int,total_jobs)
 	t_count:=0
 	for t_count<total_jobs{
-		arr[count]<-int(timeQueue)
+
+		t<-timeQueue
+		arr[count]=int(t)
 		count++
 	}
 
-	min, max, median, avg=computeStats(arr)
+	min, max, median, avg:=computeStats(arr)
 	fmt.Printf("min %d max %d median %d avg %d",min, max, median, avg)
 	
 
