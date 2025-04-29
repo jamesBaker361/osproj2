@@ -267,5 +267,5 @@ func main() {
 	fmt.Printf("Total Primes %d\n",total_primes)
 	
 
-	//select {}
+	select {}
 }
