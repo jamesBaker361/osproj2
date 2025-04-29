@@ -294,8 +294,6 @@ func main() {
 		count++
 	}
 
-	stat_list int[]
-
 	fmt.Printf("Total Primes %d\n",total_primes)
 	
 
