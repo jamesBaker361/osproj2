@@ -311,10 +311,7 @@ func (x *FilesystemMetadataResponse) GetTotalBytes() int32 {
 
 type ConsolidatorRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	StartingIndex int32                  `protobuf:"varint,1,opt,name=startingIndex,proto3" json:"startingIndex,omitempty"`
-	FileName      string                 `protobuf:"bytes,2,opt,name=fileName,proto3" json:"fileName,omitempty"`
-	NBytes        int32                  `protobuf:"varint,3,opt,name=nBytes,proto3" json:"nBytes,omitempty"`
-	NPrimes       int32                  `protobuf:"varint,4,opt,name=nPrimes,proto3" json:"nPrimes,omitempty"`
+	NPrimes       int32                  `protobuf:"varint,1,opt,name=nPrimes,proto3" json:"nPrimes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -347,27 +344,6 @@ func (x *ConsolidatorRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ConsolidatorRequest.ProtoReflect.Descriptor instead.
 func (*ConsolidatorRequest) Descriptor() ([]byte, []int) {
 	return file_all_messages_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *ConsolidatorRequest) GetStartingIndex() int32 {
-	if x != nil {
-		return x.StartingIndex
-	}
-	return 0
-}
-
-func (x *ConsolidatorRequest) GetFileName() string {
-	if x != nil {
-		return x.FileName
-	}
-	return ""
-}
-
-func (x *ConsolidatorRequest) GetNBytes() int32 {
-	if x != nil {
-		return x.NBytes
-	}
-	return 0
 }
 
 func (x *ConsolidatorRequest) GetNPrimes() int32 {
@@ -434,12 +410,9 @@ const file_all_messages_proto_rawDesc = "" +
 	"\x1aFilesystemMetadataResponse\x12\x1e\n" +
 	"\n" +
 	"totalBytes\x18\x01 \x01(\x05R\n" +
-	"totalBytes\"\x89\x01\n" +
-	"\x13ConsolidatorRequest\x12$\n" +
-	"\rstartingIndex\x18\x01 \x01(\x05R\rstartingIndex\x12\x1a\n" +
-	"\bfileName\x18\x02 \x01(\tR\bfileName\x12\x16\n" +
-	"\x06nBytes\x18\x03 \x01(\x05R\x06nBytes\x12\x18\n" +
-	"\anPrimes\x18\x04 \x01(\x05R\anPrimes\"\x16\n" +
+	"totalBytes\"/\n" +
+	"\x13ConsolidatorRequest\x12\x18\n" +
+	"\anPrimes\x18\x01 \x01(\x05R\anPrimes\"\x16\n" +
 	"\x14ConsolidatorResponse2O\n" +
 	"\x11DispatcherService\x12:\n" +
 	"\rAcceptRequest\x12\x12.DispatcherRequest\x1a\x13.DispatcherResponse\"\x002\xa3\x01\n" +
