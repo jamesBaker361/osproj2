@@ -40,14 +40,15 @@ func newDispatcherServer(buffer_size int) *DispatcherServer {
 
 type ConsolidatorServer struct {
 	pb.UnimplementedConsolidatorServiceServer
+	primeQueue chan int
 }
 
 func (s * ConsolidatorServer) AcceptRequest(_ context.Context, conreq *pb.ConsolidatorRequest) (*pb.ConsolidatorResponse,error) {
 	return &pb.ConsolidatorResponse{},nil
 }
 
-func newConsolidatorServer() *ConsolidatorServer {
-	s:=&ConsolidatorServer{}
+func newConsolidatorServer(primeQueue chan int) *ConsolidatorServer {
+	s:=&ConsolidatorServer{primeQueue:primeQueue}
 	return s
 }
 
@@ -95,7 +96,7 @@ func startDispatcherServer(d_port int,opts []grpc.ServerOption,server *Dispatche
 	d_grpcServer.Serve(d_lis)
 }
 
-func startConsolidatorServer(c_port int,opts []grpc.ServerOption) {
+func startConsolidatorServer(c_port int,opts []grpc.ServerOption,primeQueue chan int) {
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", c_port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -103,7 +104,7 @@ func startConsolidatorServer(c_port int,opts []grpc.ServerOption) {
 	
 	log.Printf("gRPC server listening on port %d...", c_port)
 	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterConsolidatorServiceServer(grpcServer, newConsolidatorServer())
+	pb.RegisterConsolidatorServiceServer(grpcServer, newConsolidatorServer(primeQueue))
 	grpcServer.Serve(lis)
 }
 
@@ -244,7 +245,8 @@ func main() {
 	go startDispatcherServer(d_port,opts,dispatcher_server)
 
 	//Consolidator
-	go startConsolidatorServer(c_port,opts)
+	primeQueue chan int
+	go startConsolidatorServer(c_port,opts,primeQueue)
 
 	
 	//FileServer
