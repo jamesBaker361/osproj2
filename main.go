@@ -65,7 +65,7 @@ func (s *DispatcherServer )  AcceptRequest(_ context.Context, disreq *pb.Dispatc
 func newDispatcherServer(buffer_size int) *DispatcherServer {
 	s:=&DispatcherServer{
 		responseQueue: make(chan *pb.DispatcherResponse, buffer_size),
-		beginJobQueue:make(chan int,1)
+		beginJobQueue:make(chan int,1),
 	}
 	return s
 }
@@ -298,7 +298,7 @@ func main() {
 		total_primes+=primes
 		count++
 	}
-	end=int(time.Now().Unix())
+	end:=int(time.Now().Unix())
 	fmt.Printf("Total Primes %d\n",total_primes)
 	arr:=make([]int,total_jobs)
 	t_count:=0
@@ -312,7 +312,7 @@ func main() {
 	min, max, median, avg:=computeStats(arr)
 	fmt.Printf("min %d max %d median %.2f avg %.2f\n",min, max, median, avg)
 	start:=<-dispatcher_server.beginJobQueue
-	fmt.Printf("total time elapsed %d" end-start)
+	fmt.Printf("total time elapsed %d \n" ,end-start)
 	
 
 	select {}
