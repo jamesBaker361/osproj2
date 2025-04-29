@@ -312,7 +312,7 @@ func main() {
 	min, max, median, avg:=computeStats(arr)
 	fmt.Printf("min %d max %d median %.2f avg %.2f\n",min, max, median, avg)
 	start:=<-dispatcher_server.beginJobQueue
-	fmt.Printf("total time elapsed %d \n" ,end-start)
+	fmt.Printf("total seconds elapsed %d \n" ,end-start)
 	
 
 	select {}
